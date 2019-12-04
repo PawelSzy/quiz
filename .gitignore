@@ -15,3 +15,4 @@
 ###< symfony/phpunit-bridge ###
 
 /docker/logs/
+/.idea/
