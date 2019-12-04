@@ -5,9 +5,11 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Answer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\QuestionRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Question
 {
@@ -44,7 +46,7 @@ class Question
     private $sigleOrMulti;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\answer", mappedBy="question", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Answer", mappedBy="question", orphanRemoval=true)
      */
     private $answers;
 
@@ -126,7 +128,7 @@ class Question
         return $this->answers;
     }
 
-    public function addAnswer(answer $answer): self
+    public function addAnswer(Answer $answer): self
     {
         if (!$this->answers->contains($answer)) {
             $this->answers[] = $answer;
@@ -136,7 +138,7 @@ class Question
         return $this;
     }
 
-    public function removeAnswer(answer $answer): self
+    public function removeAnswer(Answer $answer): self
     {
         if ($this->answers->contains($answer)) {
             $this->answers->removeElement($answer);
@@ -147,5 +149,16 @@ class Question
         }
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps(): void
+    {
+        if ($this->getCreated() === null) {
+            $this->setCreated(new \DateTime('now'));
+        }
     }
 }

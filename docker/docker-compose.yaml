@@ -1,9 +1,11 @@
 version: '2'
 services:
-    postgres:
-        image: postgres
+    mysql:
+        image: mysql:5.6
+        environment:
+            MYSQL_ROOT_PASSWORD: symf0ny
         ports:
-            - '5433:5432'
+            - "3333:3306"
     php:
         build: php-fpm
         ports:
@@ -12,7 +14,7 @@ services:
             - ../:/var/www/symfony:cached
             - ./logs/symfony:/var/www/symfony/var/logs:cached
         links:
-            - postgres
+            - mysql
     nginx:
         build: nginx
         ports:
