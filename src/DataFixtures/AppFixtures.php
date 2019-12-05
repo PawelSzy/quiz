@@ -27,6 +27,100 @@ class AppFixtures extends Fixture
                   ],
                 ],
             ],
+            [
+                'content' => "Data odkrycia ameryki",
+                'level' => 1,
+                'multi' => 0,
+                'answers' => [
+                    [
+                        'content' => '1492',
+                        'correct' => 1,
+                    ],
+                    [
+                        'content' => '1525',
+                        'correct' => 0,
+                    ],
+                ],
+            ],
+            [
+                'content' => "Chrzest Polski",
+                'level' => 1,
+                'multi' => 0,
+                'answers' => [
+                    [
+                        'content' => '996',
+                        'correct' => 1,
+                    ],
+                    [
+                        'content' => '1525',
+                        'correct' => 0,
+                    ],
+                ],
+            ],
+            [
+                'content' => "Bitwa pod Wiedniem",
+                'level' => 2,
+                'multi' => 0,
+                'answers' => [
+                    [
+                        'content' => '1683',
+                        'correct' => 1,
+                    ],
+                    [
+                        'content' => '1525',
+                        'correct' => 0,
+                    ],
+                ],
+            ],
+            [
+                'content' => "Upadek Cesarstwa Rzymskiego",
+                'level' => 2,
+                'multi' => 0,
+                'answers' => [
+                    [
+                        'content' => '476',
+                        'correct' => 1,
+                    ],
+                    [
+                        'content' => '660',
+                        'correct' => 0,
+                    ],
+                ],
+            ],
+            [
+                'content' => "Upadek Bizancjum - zdobycie Konstatynopola",
+                'level' => 2,
+                'multi' => 0,
+                'answers' => [
+                    [
+                        'content' => '1453',
+                        'correct' => 1,
+                    ],
+                    [
+                        'content' => '1330',
+                        'correct' => 0,
+                    ],
+                ],
+            ],
+            [
+                'content' => "Bitwa pod Narwą",
+                'level' => 3,
+                'multi' => 0,
+                'answers' => [
+                    [
+                        'content' => '1700',
+                        'correct' => 1,
+                    ],
+                    [
+                        'content' => '1330',
+                        'correct' => 0,
+                    ],
+                    [
+                        'content' => '1250',
+                        'correct' => 0,
+                    ],
+                ],
+            ],
         ];
 
         foreach ($questions as $questionValues) {
