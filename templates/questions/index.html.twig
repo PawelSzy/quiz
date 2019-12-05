@@ -9,12 +9,29 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1>Pytania</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/symfony/src/Controller/QuestionsController.php'|file_link(0) }}">src/Controller/QuestionsController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/symfony/templates/questions/index.html.twig'|file_link(0) }}">templates/questions/index.html.twig</a></code></li>
-    </ul>
+    <table class="table table-bordered">
+        <tr>
+            <th>id</th>
+            <th>Question</th>
+            <th>Usuń</th>
+            <th>Edytuj</th>
+        </tr>
+
+        {% for question in pagination %}
+            <tr>
+                <th>{{ question.id }}</th>
+                <th>{{ question.content}}</th>
+                <th>Usuń</th>
+                <th>Edytuj</th>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+
 </div>
 {% endblock %}
