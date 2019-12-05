@@ -52,13 +52,13 @@ class Question
     private $sigleOrMulti;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Answer", mappedBy="question", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Answer", mappedBy="question", orphanRemoval=true, cascade={"persist"})
      */
     private $answers;
 
     public function __construct()
     {
-        $this->answers = new ArrayCollection();
+        $this->answers = new ArraynCollection();
     }
 
     public function getId(): ?int
@@ -167,4 +167,9 @@ class Question
             $this->setCreated(new \DateTime('now'));
         }
     }
+
+    public function __toString() {
+        return $this->getContent();
+    }
+
 }
