@@ -22,7 +22,7 @@ class QuestionController extends AbstractController
      */
     public function index(QuestionRepository $questionRepository, PaginatorInterface $paginator,  Request $request): Response
     {
-        $pagination = $paginator->paginate($questionRepository->findAll(),$request->query->getInt('page', 1),3);
+        $pagination = $paginator->paginate($questionRepository->findAll(),$request->query->getInt('page', 1), 10);
 
         return $this->render('question/index.html.twig', [
             'pagination' => $pagination,
@@ -37,13 +37,6 @@ class QuestionController extends AbstractController
     {
         $question = new Question();
         $form = $this->createForm(QuestionType::class, $question);
-//        var_dump($form);
-
-//        $form->remove('questionLevel');
-//        $form->add('questionLevel', TextType::class, [
-//            'required' => true,
-//            'label' => 'question Level',
-//        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -8,6 +8,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+
 
 class QuestionType extends AbstractType
 {
@@ -23,8 +25,11 @@ class QuestionType extends AbstractType
                     'zaawansowany' => 2,
                     'expert' => 3,
                 ]])
-            ->add('sigleOrMulti');
-
+            ->add('sigleOrMulti', ChoiceType::class, [
+                'choices'  => [
+                    'single' => 0,
+                    'multi' => 1,
+                ]]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
