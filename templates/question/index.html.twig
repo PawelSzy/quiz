@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Question index{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Pytanie</h1>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Identyfikator</th>
+                <th>operacje</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for question in pagination %}
+            <tr>
+                <td>{{ question.id }}</td>
+                <td>{{ question.content }}</td>
+                <td>
+                    <a href="{{ path('question_show', {'id': question.id}) }}">show</a>
+                    <a href="{{ path('question_edit', {'id': question.id}) }}">edit</a>
+                    <a href="">
+                        {{ include('question/_delete_link.html.twig') }}
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+
+    <a href="{{ path('question_new') }}">Create new</a>
+</div>
+{% endblock %}
