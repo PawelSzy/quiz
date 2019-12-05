@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="container">
-    <h1>Pytanie</h1>
+    <h1>Pytania</h1>
 
     <table class="table table-bordered">
         <thead>
@@ -21,7 +21,6 @@
                 <td>{{ question.id }}</td>
                 <td>{{ question.content }}</td>
                 <td>
-                    <a href="{{ path('question_show', {'id': question.id}) }}">show</a>
                     <a href="{{ path('question_edit', {'id': question.id}) }}">edit</a>
                     <a href="">
                         {{ include('question/_delete_link.html.twig') }}
@@ -36,10 +35,10 @@
         </tbody>
     </table>
 
-    <div class="navigation">
+    <div class="navigation my-2">
         {{ knp_pagination_render(pagination) }}
     </div>
 
-    <a href="{{ path('question_new') }}">Create new</a>
+    <a href="{{ path('question_new') }}">Utwórz nowe pytanie</a>
 </div>
 {% endblock %}

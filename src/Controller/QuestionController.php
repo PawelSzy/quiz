@@ -37,6 +37,13 @@ class QuestionController extends AbstractController
     {
         $question = new Question();
         $form = $this->createForm(QuestionType::class, $question);
+//        var_dump($form);
+
+//        $form->remove('questionLevel');
+//        $form->add('questionLevel', TextType::class, [
+//            'required' => true,
+//            'label' => 'question Level',
+//        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
