@@ -1,7 +1,10 @@
 {{ form_start(form) }}
-    <ul class="tags" data-prototype="{{ form_widget(form.answers.vars.prototype)|e('html_attr') }}">
+    <ul class="answers" data-prototype="{{ form_widget(form.answers.vars.prototype)|e('html_attr') }}">
         {{ form(form) }}
-        <button class="btn">{{ button_label|default('Save') }}</button>
+
+        <div class="anwers_button my-4">
+            <button class="btn">{{ button_label|default('Save') }}</button>
+        </div>
     </ul>
 {{ form_end(form) }}
 
@@ -16,11 +19,10 @@
         jQuery(document).ready(function() {
             // Get the ul that holds the collection of answers
 //        $collectionHolder = $('ul.answers');
-            $collectionHolder = $('ul.tags');
-
+            $collectionHolder = $('ul.answers');
 
             // add the "add a answer" anchor and li to the answers ul
-            $collectionHolder.append($newLinkLi);
+            $collectionHolder.find('.anwers_button').before($newLinkLi);
 
             // count the current form inputs we have (e.g. 2), use that as the new
             // index when inserting a new item (e.g. 2)
@@ -30,6 +32,22 @@
                 // add a new answer form (see next code block)
                 addAnswerForm($collectionHolder, $newLinkLi);
             });
+
+
+            // add a delete link to all of the existing tag form li elements
+            $collectionHolder.find('#question_answers > fieldset').each(function() {
+                addTagFormDeleteLink($(this));
+            });
+
+            function addTagFormDeleteLink($tagFormLi) {
+                var $removeFormButton = $('<button type="button">Delete this tag</button>');
+                $tagFormLi.append($removeFormButton);
+
+                $removeFormButton.on('click', function(e) {
+                    // remove the li for the tag form
+                    $tagFormLi.remove();
+                });
+            }
 
             function addAnswerForm($collectionHolder, $newLinkLi) {
                 // Get the data-prototype explained earlier
@@ -44,7 +62,6 @@
                 var $newFormLi = $('<li></li>').append(newForm);
                 $newLinkLi.before($newFormLi);
             }
-
         });
     })
 

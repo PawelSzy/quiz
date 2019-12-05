@@ -27,7 +27,7 @@ class Answer
     private $correct;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="smallint", nullable=true)
      */
     private $answer_order;
 
