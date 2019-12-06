@@ -19,6 +19,17 @@ class QuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, Question::class);
     }
 
+    public function findByLevel(int $questionsLevel)
+    {
+        return $this->createQueryBuilder('q')
+            ->andWhere('q.questionLevel = :val')
+            ->setParameter('val', $questionsLevel)
+            ->orderBy('q.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return Question[] Returns an array of Question objects
     //  */

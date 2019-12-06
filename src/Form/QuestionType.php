@@ -21,7 +21,6 @@ class QuestionType extends AbstractType
         $builder
             ->add('content')
             ->add('active')
-//            ->add('created')
             ->add('questionLevel', ChoiceType::class, [
                 'choices'  => [
                     'początkujący' => 1,
