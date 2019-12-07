@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     message="To pytanie już istnieje"
  * )
  */
-class Question
+class Question implements \Serializable
 {
     /**
      * @ORM\Id()
@@ -170,6 +170,35 @@ class Question
 
     public function __toString() {
         return $this->getContent();
+    }
+
+
+    public function serialize()
+    {
+        return json_encode(
+            [
+                $this->id,
+                $this->content,
+                $this->questionLevel,
+                $this->active,
+                $this->created,
+                $this->sigleOrMulti,
+            ]
+        );
+    }
+
+    public function unserialize($serialized)
+    {
+
+        $data = json_decode($serialized);
+        list(
+                $this->id,
+                $this->content,
+                $this->questionLevel,
+                $this->active,
+                $this->created,
+                $this->sigleOrMulti,
+            ) = $data;
     }
 
 }

@@ -24,13 +24,9 @@ class QuizFactory
         }
 
         $questions = $this->questionRepository->findByLevel($questionsLevel);
-        dump($questions);
         if (count($questions) > $numberOfQuestions) {
-            array_rand($questions, $numberOfQuestions);
-            dump($questions);
-            dump($number)
+            shuffle($questions);
             $questions = array_slice($questions, 0, $numberOfQuestions);
-            dump($questions);
         }
 
         $quiz = new Quiz($questions);

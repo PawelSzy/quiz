@@ -2,7 +2,7 @@
 
 namespace App\Quiz;
 
-class Quiz
+class Quiz implements \Serializable
 {
     private $questions;
     private $numberOfQuestions;
@@ -19,6 +19,31 @@ class Quiz
     public function getNumberOfQuestions(): int
     {
         return $this->numberOfQuestions;
+    }
+
+    public function serialize()
+    {
+        return serialize(
+            [
+                $this->questions,
+                $this->numberOfQuestions,
+                $this->userAnswers,
+                $this->actualQuestion,
+                $this->isEnded,
+            ]
+        );
+    }
+
+    public function unserialize($serialized)
+    {
+        $data = unserialize($serialized);
+        list(
+            $this->questions,
+            $this->numberOfQuestions,
+            $this->userAnswers,
+            $this->actualQuestion,
+            $this->isEnded,
+            ) = $data;
     }
 
 }

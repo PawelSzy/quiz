@@ -27,19 +27,34 @@ class QuizController extends AbstractController
             /**
              * @var App\Quiz\Quiz $quiz
              */
-            $quiz = $quizFactory->createQuiz($data->numberOfQuestions, $data->levelOfQuestion);
+            $quiz = $quizFactory->createQuiz($data->levelOfQuestion, $data->numberOfQuestions);
 
             if ($quiz->getNumberOfQuestions() < $data->numberOfQuestions) {
                 $error = new FormError("Nie ma tylu pytań z tego poziomu, zmiejsz liczbę pytań");
                 $form->addError($error);
             }
 
-            dump($quiz);
+            $session = $request->getSession();
+            $session->set('quiz', $quiz);
 
+            return $this->redirectToRoute('quiz_test');
         }
 
         return $this->render('quiz/index.html.twig', [
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/quiz_test", name="quiz_test")
+     */
+    public function quiz_test(Request $request)
+    {
+        $session = $request->getSession();
+        $quiz = $session->get('quiz');
+        return $this->render('quiz/quiz_test.html.twig', [
+//            'form' => $form->createView(),
+        ]);
+    }
+
 }
