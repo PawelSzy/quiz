@@ -36,7 +36,7 @@ class Quiz implements \Serializable, \Iterator
         $this->userAnswers[$questionId][] = $answer;
     }
 
-    public function getUserAnswer(int $questionId): mixed
+    public function getUserAnswersForQuestion(int $questionId): array
     {
         if (isset($this->userAnswers[$questionId])) {
             return $this->userAnswers[$questionId];
@@ -68,14 +68,13 @@ class Quiz implements \Serializable, \Iterator
         }
 
        return $passedQuestion /  $this->getNumberOfQuestions() >= $percantageOfPassed;
-
     }
 
     public function current(): Question
     {
         return $this->questions[$this->actualQuestion];
     }
-    public function key() : scalar
+    public function key()
     {
         return $this->actualQuestion;
     }

@@ -11,9 +11,7 @@ use App\Form\QuizType;
 use App\Quiz\QuizData;
 use App\Quiz\Quiz;
 
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 
@@ -39,10 +37,10 @@ class QuizController extends AbstractController
                 $error = new FormError("Nie ma tylu pytań z tego poziomu, zmiejsz liczbę pytań");
                 $form->addError($error);
             }
-
-            $this->setQuizInSession($request, $quiz);
-
-            return $this->redirectToRoute('quiz_test');
+            else {
+                $this->setQuizInSession($request, $quiz);
+                return $this->redirectToRoute('quiz_test');
+            }
         }
 
         return $this->render('quiz/index.html.twig', [
@@ -98,7 +96,6 @@ class QuizController extends AbstractController
         ]);
     }
 
-
     /**
      * @Route("/quiz_end", name="quiz_end")
      */
@@ -122,5 +119,4 @@ class QuizController extends AbstractController
         $quiz = $session->get('quiz');
         return $quiz;
     }
-
 }
