@@ -24,7 +24,9 @@ class QuizFactory
         }
 
         $questions = $this->questionRepository->findByLevel($questionsLevel);
+
         if (count($questions) > $numberOfQuestions) {
+            // @TODO do shuffle and slice in database query not in this code
             shuffle($questions);
             $questions = array_slice($questions, 0, $numberOfQuestions);
         }

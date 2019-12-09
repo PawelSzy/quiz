@@ -22,6 +22,10 @@ class QuestionRepository extends ServiceEntityRepository
     public function findByLevel(int $questionsLevel)
     {
         return $this->createQueryBuilder('q')
+            ->select('q')
+            ->leftJoin('q.answers', 'answers')
+            ->addSelect('answers')
+            ->where('answers.id IS NOT NULL')
             ->andWhere('q.questionLevel = :val')
             ->setParameter('val', $questionsLevel)
             ->orderBy('q.id', 'ASC')

@@ -11,6 +11,12 @@ use App\Form\QuizType;
 use App\Quiz\QuizData;
 use App\Quiz\Quiz;
 
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
+
 class QuizController extends AbstractController
 {
     /**
@@ -52,8 +58,25 @@ class QuizController extends AbstractController
     {
         $session = $request->getSession();
         $quiz = $session->get('quiz');
+
+        $question = $quiz->current();
+        $answers = $question->getAnswers();
+
+        $form = $this->createFormBuilder()
+            ->add('answer', ChoiceType::class, [
+                'choices' => $answers,
+                'choice_label' => function ($choice, $key, $value) use ($answers) {
+                    return $choice->getContent();
+                },
+                'expanded' => true,
+                'multiple' => false,
+            ])
+            ->add('save', SubmitType::class, ['label' => 'Create Task'])
+            ->getForm();
+
         return $this->render('quiz/quiz_test.html.twig', [
-//            'form' => $form->createView(),
+            'form' => $form->createView(),
+            'question' => $question->getContent(),
         ]);
     }
 

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AnswerRepository")
  */
-class Answer
+class Answer implements \Serializable
 {
     /**
      * @ORM\Id()
@@ -33,7 +33,7 @@ class Answer
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Question", inversedBy="answers")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, name="question_id", referencedColumnName="id")
      */
     private $question;
 
@@ -89,4 +89,33 @@ class Answer
 
         return $this;
     }
+
+    public function __toString() {
+       return $this->getContent();
+    }
+
+    public function serialize()
+    {
+
+       return json_encode(
+        [
+            $this->id,
+            $this->content,
+            $this->correct,
+            $this->answer_order,
+        ]
+      );
+    }
+
+    public function unserialize($serialized)
+    {
+        $data = json_decode($serialized);
+        list(
+            $this->id,
+            $this->content,
+            $this->correct,
+            $this->answer_order,
+        ) = $data;
+    }
+
 }

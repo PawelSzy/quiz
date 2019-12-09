@@ -52,7 +52,17 @@ class Question implements \Serializable
     private $sigleOrMulti;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Answer", mappedBy="question", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(
+     *  targetEntity="App\Entity\Answer",
+     *  mappedBy="question",
+     *  orphanRemoval=true,
+     *  cascade={"persist"},
+     * )
+     * @ORM\JoinTable(
+     *  name="answers",
+     *  joinColumns={@ORM\JoinColumn(name="answer_id", referencedColumnName="id")},
+     *  inverseJoinColumns={@ORM\JoinColumn(name="answer_id", referencedColumnName="id")}
+     * )
      */
     private $answers;
 
@@ -172,9 +182,9 @@ class Question implements \Serializable
         return $this->getContent();
     }
 
-
     public function serialize()
     {
+        $answers = serialize($this->answers);
         return json_encode(
             [
                 $this->id,
@@ -183,14 +193,15 @@ class Question implements \Serializable
                 $this->active,
                 $this->created,
                 $this->sigleOrMulti,
+                $answers,
             ]
         );
     }
 
     public function unserialize($serialized)
     {
-
         $data = json_decode($serialized);
+        $data[6] = unserialize($data[6]);
         list(
                 $this->id,
                 $this->content,
@@ -198,6 +209,7 @@ class Question implements \Serializable
                 $this->active,
                 $this->created,
                 $this->sigleOrMulti,
+                $this->answers,
             ) = $data;
     }
 
