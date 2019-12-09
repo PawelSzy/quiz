@@ -68,7 +68,7 @@ class Question implements \Serializable
 
     public function __construct()
     {
-        $this->answers = new ArraynCollection();
+        $this->answers = new ArrayCollection();
     }
 
     public function getId(): ?int
