@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 
 /**
- * @Route("/")
+ * @Route("/question")
  */
 class QuestionController extends AbstractController
 {

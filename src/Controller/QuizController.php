@@ -20,7 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 class QuizController extends AbstractController
 {
     /**
-     * @Route("/quiz", name="quiz")
+     * @Route("/", name="quiz")
      */
     public function index(QuizFactory $quizFactory, Request $request)
     {
@@ -40,8 +40,7 @@ class QuizController extends AbstractController
                 $form->addError($error);
             }
 
-            $session = $request->getSession();
-            $session->set('quiz', $quiz);
+            $this->setQuizInSession($request, $quiz);
 
             return $this->redirectToRoute('quiz_test');
         }
@@ -52,18 +51,21 @@ class QuizController extends AbstractController
     }
 
     /**
-     * @Route("/quiz_test", name="quiz_test")
+     * @Route("/quiz", name="quiz_test")
      */
     public function quiz_test(Request $request)
     {
-        $session = $request->getSession();
-        $quiz = $session->get('quiz');
+        $quiz = $this->getQuizFromSession($request);
+
+        if (!$quiz->valid()) {
+            return $this->redirectToRoute('quiz_end');
+        }
 
         $question = $quiz->current();
         $answers = $question->getAnswers();
 
         $form = $this->createFormBuilder()
-            ->add('answer', ChoiceType::class, [
+            ->add('answers', ChoiceType::class, [
                 'choices' => $answers,
                 'choice_label' => function ($choice, $key, $value) use ($answers) {
                     return $choice->getContent();
@@ -71,13 +73,54 @@ class QuizController extends AbstractController
                 'expanded' => true,
                 'multiple' => false,
             ])
-            ->add('save', SubmitType::class, ['label' => 'Create Task'])
+            ->add('save', SubmitType::class, ['label' => 'Następne pytanie'])
             ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            // @TODO make posible to make multiple choices
+            $answers = [$data['answers']];
+            $question->checkIfAnswersAreCorrect($answers);
+
+            foreach ($answers as $answer) {
+                $quiz->addUserAnswer($question->getId(), $answer);
+            }
+
+            $quiz->next();
+
+            return $this->redirectToRoute('quiz_test');
+        }
 
         return $this->render('quiz/quiz_test.html.twig', [
             'form' => $form->createView(),
             'question' => $question->getContent(),
         ]);
+    }
+
+
+    /**
+     * @Route("/quiz_end", name="quiz_end")
+     */
+    public function quiz_end(Request $request) {
+        $quiz = $this->getQuizFromSession($request);
+
+        return $this->render('quiz/quiz_end.html.twig', [
+            'quiz' => $quiz,
+        ]);
+    }
+
+    public function setQuizInSession(Request $request, $quiz)
+    {
+        $session = $request->getSession();
+        $session->set('quiz', $quiz);
+    }
+
+    public function getQuizFromSession(Request $request)
+    {
+        $session = $request->getSession();
+        $quiz = $session->get('quiz');
+        return $quiz;
     }
 
 }

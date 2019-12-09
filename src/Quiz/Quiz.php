@@ -2,13 +2,14 @@
 
 namespace App\Quiz;
 
+use App\Entity\Answer;
 use App\Entity\Question;
 
 class Quiz implements \Serializable, \Iterator
 {
     private $questions;
     private $numberOfQuestions;
-    private $userAnswers;
+    private $userAnswers = [];
     private $actualQuestion;
     private $isEnded;
 
@@ -26,9 +27,13 @@ class Quiz implements \Serializable, \Iterator
         return $this->numberOfQuestions;
     }
 
-    public function addUserAnswer(int $questionId, int $answerId)
+    public function addUserAnswer(int $questionId, Answer $answer)
     {
-        $this->userAnswers[$questionId] = $answerId;
+        if (!isset($this->userAnswers[$questionId])) {
+            $this->userAnswers[$questionId] = [];
+        }
+
+        $this->userAnswers[$questionId][] = $answer;
     }
 
     public function getUserAnswer(int $questionId): mixed
@@ -38,6 +43,32 @@ class Quiz implements \Serializable, \Iterator
         }
 
         return false;
+    }
+
+    public function getUserAnswers(): array
+    {
+        return $this->userAnswers;
+    }
+
+    public function isQuizPassed(float $percantageOfPassed = 0.8) {
+
+        $passedQuestion = 0;
+        foreach ($this->getUserAnswers() as $questionId => $answers) {
+            $isQuestionPassed = true;
+            foreach($answers as $answer) {
+                if (!$answer->getCorrect()) {
+                    $isQuestionPassed = false;
+                    break;
+                }
+            }
+
+            if( $isQuestionPassed) {
+                $passedQuestion++;
+            }
+        }
+
+       return $passedQuestion /  $this->getNumberOfQuestions() >= $percantageOfPassed;
+
     }
 
     public function current(): Question

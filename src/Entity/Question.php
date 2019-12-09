@@ -167,6 +167,16 @@ class Question implements \Serializable
         return $this;
     }
 
+    public function checkIfAnswersAreCorrect(array $answers) {
+        foreach ($answers as $answer) {
+            if (!$answer->getCorrect()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
      * @ORM\PrePersist
      * @ORM\PreUpdate
